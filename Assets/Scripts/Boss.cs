@@ -15,14 +15,12 @@ public class Boss : Enemy
     public Image hpBar;                // полоска жизней вверху экрана
     public AudioClip shootClip;
 
-    Transform player;
     bool phase2;
     float pause = 2.3f;   // отдых между атаками — время бить босса
 
     protected override void Start()
     {
-        base.Start();   // жизни — из Enemy
-        player = GameObject.FindWithTag("Player").transform;
+        base.Start();   // жизни и ссылка на игрока (player) — из Enemy
         exclamation.SetActive(false);
         StartCoroutine(Fight());
     }
