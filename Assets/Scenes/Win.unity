@@ -1381,6 +1381,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MenuUI
   fishText: {fileID: 808936350}
+  levelPanel: {fileID: 0}
+  levels: []
+  levelButtons: []
+  settingsPanel: {fileID: 0}
+  volumeSlider: {fileID: 0}
+  confirmPanel: {fileID: 0}
+  confirmText: {fileID: 0}
 --- !u!4 &220121624
 Transform:
   m_ObjectHideFlags: 0

@@ -1062,7 +1062,7 @@ MonoBehaviour:
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 10
-    m_MaxSize: 40
+    m_MaxSize: 64
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -2998,9 +2998,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39fcbafeb51674ceaa56f3b819c32b6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
-  maxHp: 3
-  hp: 3
+  stats: {fileID: 11400000, guid: 3b1cf5b76d7df49fd945c747260b5488, type: 2}
   hurtClip: {fileID: 8300000, guid: 3f793ea0b189e4c0eb17310747852bd8, type: 3}
+  hp: 3
 --- !u!114 &405587744
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3043,8 +3043,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e46744843139540f9b606e91e38d0918, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PenguinController
-  speed: 5.5
-  jumpSpeed: 7
+  stats: {fileID: 11400000, guid: 3b1cf5b76d7df49fd945c747260b5488, type: 2}
   anim: {fileID: 1486064110}
   jumpClip: {fileID: 8300000, guid: 74c88e07b62d7476ab57432ace660e8b, type: 3}
 --- !u!114 &405587746
@@ -3059,8 +3058,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5c2de9608c4d431aa8a10b4e4d9f557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Thrower
-  snowballPrefab: {fileID: 3795107522999082633, guid: bcd6e072ba90f4584944b49106806b98, type: 3}
-  cooldown: 0.35
+  stats: {fileID: 11400000, guid: 3b1cf5b76d7df49fd945c747260b5488, type: 2}
+  snowballPrefab: {fileID: 2814490113611074220, guid: bcd6e072ba90f4584944b49106806b98, type: 3}
   throwClip: {fileID: 8300000, guid: 5407dcf9060b440c7ad7e1c6c40c033d, type: 3}
 --- !u!82 &405587747
 AudioSource:
@@ -5601,7 +5600,7 @@ MonoBehaviour:
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 10
-    m_MaxSize: 40
+    m_MaxSize: 64
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -7138,7 +7137,7 @@ MonoBehaviour:
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 10
-    m_MaxSize: 40
+    m_MaxSize: 60
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -9309,7 +9308,7 @@ MonoBehaviour:
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 10
-    m_MaxSize: 40
+    m_MaxSize: 120
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -13364,7 +13363,7 @@ MonoBehaviour:
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 10
-    m_MaxSize: 40
+    m_MaxSize: 64
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -16383,9 +16382,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3eee060ee214b4a4e9c4515e1451439a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  nextScene: Level2
-  fishNeeded: 5
-  startMessage: COLLECT 5 FISH TO OPEN THE PORTAL!
+  level: {fileID: 11400000, guid: be7d02d8df667415cac916c0d3387af3, type: 2}
+  items: {fileID: 11400000, guid: e1dad18dfad0c43f296b84679a0afdb7, type: 2}
   player: {fileID: 405587743}
   portal: {fileID: 1703590539}
   hearts:
@@ -16393,6 +16391,7 @@ MonoBehaviour:
   - {fileID: 706053123}
   - {fileID: 1049986656}
   fishText: {fileID: 1673481628}
+  levelText: {fileID: 1469608338}
   messageText: {fileID: 577957596}
   winClip: {fileID: 8300000, guid: 396e12ceca1e7420aa5d499dc98b046d, type: 3}
 --- !u!82 &2018141478
