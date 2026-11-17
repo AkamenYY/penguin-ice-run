@@ -21,3 +21,13 @@ What I asked the AI agent (Claude), what it got wrong, what I changed and why.
 2026-11-11  Charger uses agent.Move() for the dash, so it cannot leave the NavMesh: no flying through walls or into the water.
 2026-11-11  Playtest: ______ — __ tries, ______ — __ tries. Changed: ______ __ → __, ______ __ → __. Now: __ tries.
 ```
+
+## Week 11 — Data and Saves (Assignment 11)
+
+```
+2026-11-18  Asked the agent to move every balance number into ScriptableObjects: PlayerStats, EnemyStats (one asset per enemy type), BossStats, ItemValues, LevelData. Scripts only read stats.*, serialized fields have no default numbers.
+2026-11-18  Levels: enemies are no longer placed in the scenes. Each LevelData has a list of EnemySpawn (prefab, position, angle, patrol length); the same GameManager code spawns them, plus fish goal, time limit and message.
+2026-11-18  Save: JsonUtility + save.json in persistentDataPath, write to save.tmp then File.Replace. No BinaryFormatter, no Dictionary (unlocked levels are a List<int>).
+2026-11-18  Broken save test did nothing in the Editor: Enter Play Mode keeps static fields, so the old data stayed in memory. Added a RuntimeInitializeOnLoadMethod that clears it, so every Play reads the file again like on the phone.
+2026-11-18  Found a week-10 bug: the menu seals searched for the player in the main menu (no player there) and threw NullReferenceException. Enemy.Start now checks for null.
+```
