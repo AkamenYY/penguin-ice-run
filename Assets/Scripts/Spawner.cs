@@ -1,26 +1,29 @@
 using System.Collections;
 using UnityEngine;
 
-// Спавнер падающих сосулек (Instantiate, A6): раз в interval секунд — случайная точка в зоне area.
-// Сначала на льду появляется красная метка, через 0.9 сек сверху падает сосулька — игрок успевает отойти.
+// Спавнер падающих сосулек (Level2): как часто — в LevelData, скорость и время метки — в ItemValues.
+// Сначала на льду появляется красная метка, потом сверху падает сосулька — игрок успевает отойти.
 public class Spawner : MonoBehaviour
 {
-    public GameObject prefab;          // сосулька
+    public Projectile prefab;          // сосулька
     public GameObject warningPrefab;   // красная метка
-    public Vector3 area = new Vector3(6f, 0f, 6f);
-    public float interval = 2f;
-    public float height = 7f;
+    public Vector3 area;               // размер зоны (раскладка сцены)
+    public float height;               // с какой высоты падает
 
     IEnumerator Start()   // Start может быть корутиной
     {
-        yield return new WaitForSeconds(1.5f);
+        float interval = GameManager.I.level.icicleInterval;
+        ItemValues items = GameManager.I.items;
+        if (interval <= 0f) yield break;   // в этом уровне сосулек нет
+
         while (true)
         {
+            yield return new WaitForSeconds(interval);
             Vector3 p = transform.position + new Vector3(Random.Range(-area.x, area.x) / 2f, 0f, Random.Range(-area.z, area.z) / 2f);
-            Destroy(Instantiate(warningPrefab, p, Quaternion.identity), 1.4f);
-            yield return new WaitForSeconds(0.9f);
-            Instantiate(prefab, p + Vector3.up * height, Quaternion.identity);
-            yield return new WaitForSeconds(interval - 0.9f);
+            Destroy(Instantiate(warningPrefab, p, Quaternion.identity), items.icicleWarnTime + 0.5f);
+            yield return new WaitForSeconds(items.icicleWarnTime);
+            Projectile icicle = Instantiate(prefab, p + Vector3.up * height, Quaternion.identity);
+            icicle.speed = items.icicleSpeed;
         }
     }
 }

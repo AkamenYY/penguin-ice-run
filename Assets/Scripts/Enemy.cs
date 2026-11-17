@@ -2,21 +2,30 @@ using UnityEngine;
 
 // БАЗОВЫЙ класс всех врагов. Наследники: Seal, Patroller, Shooter, Charger, Boss.
 // Общее: жизни, ссылка на игрока, «вижу ли игрока» (дистанция + угол + луч), красный «!» перед атакой.
+// Все числа баланса — в ассете EnemyStats (поле stats), не в коде.
 public abstract class Enemy : MonoBehaviour
 {
-    public int maxHp = 1;               // сколько снежков выдерживает
+    public EnemyStats stats;            // ДАННЫЕ: Seal_Stats / Patroller_Stats / Shooter_Stats / Charger_Stats
     public bool touchDamage = true;     // бьёт касанием (старый тюлень и босс). Новые враги — false, у них своя атака
     public GameObject warning;          // красный «!» над головой: показываем во время замаха (wind-up)
+    public float patrolDistance;        // длина патруля — ставит GameManager из LevelData
 
-    protected int hp;
+    protected int hp;                   // текущие жизни — у КАЖДОГО врага свои (в ассете только maxHp)
     protected bool dead;
     protected Transform player;
 
     protected virtual void Start()
     {
-        hp = maxHp;
-        player = GameObject.FindWithTag("Player").transform;   // ищем один раз, а не каждый кадр
+        hp = MaxHp();
+        GameObject p = GameObject.FindWithTag("Player");   // ищем один раз, а не каждый кадр
+        if (p != null) player = p.transform;               // в главном меню игрока нет — тюлени просто ползают
         ShowWarning(false);
+    }
+
+    // сколько жизней у врага (босс берёт из своего BossStats — переопределяет)
+    protected virtual int MaxHp()
+    {
+        return stats.maxHp;
     }
 
     // попал снежок
@@ -59,13 +68,13 @@ public abstract class Enemy : MonoBehaviour
         return Vector3.Distance(transform.position, player.position);
     }
 
-    // плавно повернуться к игроку (только по горизонтали)
-    protected void TurnToPlayer(float degreesPerSecond)
+    // плавно повернуться к игроку (только по горизонтали), скорость поворота — stats.turnSpeed
+    protected void TurnToPlayer()
     {
         Vector3 dir = player.position - transform.position;
         dir.y = 0f;
         if (dir == Vector3.zero) return;
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(dir), degreesPerSecond * Time.deltaTime);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(dir), stats.turnSpeed * Time.deltaTime);
     }
 
     protected void ShowWarning(bool on)

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-// Сердце-аптечка: +1 жизнь.
+// Сердце-аптечка: сколько лечит — в ассете Item_Values.
 public class HeartPickup : MonoBehaviour
 {
     public AudioClip pickupClip;
@@ -10,7 +10,7 @@ public class HeartPickup : MonoBehaviour
         Health health = other.GetComponent<Health>();
         if (health == null) return;   // это не пингвин
 
-        health.Heal();
+        health.Heal(GameManager.I.items.heartHeal);
         other.GetComponent<AudioSource>().PlayOneShot(pickupClip);
         Destroy(gameObject);
     }

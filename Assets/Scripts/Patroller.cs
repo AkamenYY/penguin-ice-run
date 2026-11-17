@@ -2,29 +2,15 @@ using UnityEngine;
 using UnityEngine.AI;
 
 // ВРАГ 1 — тюлень-охранник. Ходит по NavMesh.
-// Состояния: Patrol (ходит по точкам) → Chase (увидел — бежит за игроком) → Attack (замах, укус, отдых).
-// Потерял игрока из виду на loseTime секунд → снова Patrol.
+// Состояния: Patrol (ходит туда-обратно) → Chase (увидел — бежит за игроком) → Attack (замах, укус, отдых).
+// Потерял игрока из виду на stats.loseTime секунд → снова Patrol. Все числа — в Patroller_Stats.
 public class Patroller : Enemy
 {
     enum State { Patrol, Chase, Attack }
 
-    [Header("Движение")]
-    public Transform[] points;          // точки патруля
-    public float patrolSpeed = 2f;
-    public float chaseSpeed = 3.5f;
-
-    [Header("Зрение")]
-    public float viewRange = 8f;
-    public float viewAngle = 120f;
-    public float loseTime = 2f;         // сколько секунд ищет, когда потерял игрока
-
-    [Header("Атака")]
-    public float attackRange = 1.6f;
-    public float windUp = 0.5f;         // замах: «!» над головой, тюлень стоит
-    public float cooldown = 1.2f;       // отдых после укуса
-
     State state = State.Patrol;
     NavMeshAgent agent;
+    Vector3[] points;   // 2 точки патруля: где появился и patrolDistance вперёд
     int point;          // номер текущей точки патруля
     float timer;        // таймер текущего состояния
     bool bitten;        // уже укусил в этой атаке
@@ -33,6 +19,7 @@ public class Patroller : Enemy
     {
         base.Start();
         agent = GetComponent<NavMeshAgent>();
+        points = new[] { transform.position, transform.position + transform.forward * patrolDistance };
         GoPatrol();
     }
 
@@ -54,35 +41,35 @@ public class Patroller : Enemy
         if (!agent.pathPending && agent.remainingDistance < 0.3f)
         {
             point = (point + 1) % points.Length;
-            agent.SetDestination(points[point].position);
+            agent.SetDestination(points[point]);
         }
 
-        if (CanSeePlayer(viewRange, viewAngle)) GoChase();
+        if (CanSeePlayer(stats.viewRange, stats.viewAngle)) GoChase();
     }
 
     void Chase()
     {
         agent.SetDestination(player.position);
 
-        if (CanSeePlayer(viewRange, viewAngle)) timer = 0f;   // видим — сбрасываем таймер «потерял»
+        if (CanSeePlayer(stats.viewRange, stats.viewAngle)) timer = 0f;   // видим — сбрасываем таймер «потерял»
 
-        if (DistanceToPlayer() < attackRange) GoAttack();
-        else if (timer > loseTime) GoPatrol();
+        if (DistanceToPlayer() < stats.attackRange) GoAttack();
+        else if (timer > stats.loseTime) GoPatrol();
     }
 
     void Attack()
     {
-        TurnToPlayer(360f);
+        TurnToPlayer();
 
         // конец замаха — кусаем, если игрок всё ещё рядом (успел отбежать — промах)
-        if (!bitten && timer >= windUp)
+        if (!bitten && timer >= stats.windUp)
         {
             bitten = true;
             ShowWarning(false);
-            if (DistanceToPlayer() < attackRange + 0.4f) HitPlayer();
+            if (DistanceToPlayer() < stats.hitRange) HitPlayer();
         }
 
-        if (timer >= windUp + cooldown) GoChase();
+        if (timer >= stats.windUp + stats.cooldown) GoChase();
     }
 
     // ---------- переходы между состояниями ----------
@@ -90,8 +77,8 @@ public class Patroller : Enemy
     void GoPatrol()
     {
         state = State.Patrol;
-        agent.speed = patrolSpeed;
-        agent.SetDestination(points[point].position);
+        agent.speed = stats.moveSpeed;
+        agent.SetDestination(points[point]);
     }
 
     void GoChase()
@@ -99,7 +86,7 @@ public class Patroller : Enemy
         state = State.Chase;
         timer = 0f;
         agent.isStopped = false;
-        agent.speed = chaseSpeed;
+        agent.speed = stats.chaseSpeed;
     }
 
     void GoAttack()

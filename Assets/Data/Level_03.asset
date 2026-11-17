@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 085e325b8e0a5401b971b1382a64cc04, type: 3}
+  m_Name: Level_03
+  m_EditorClassIdentifier: Assembly-CSharp::LevelData
+  number: 3
+  title: LEVEL 3
+  sceneName: Level3_Arena
+  nextScene: Level3_Boss
+  fishGoal: 6
+  timeLimit: 120
+  startMessage: SEALS CHASE, SNOWMEN SHOOT, THE WALRUS CHARGES!
+  icicleInterval: 0
+  enemies:
+  - prefab: {fileID: 5385051579305638180, guid: cb42432fd36064cb690c83786002d0e3, type: 3}
+    position: {x: -6, y: 0, z: 5}
+    angle: 90
+    patrolDistance: 12
+  - prefab: {fileID: 5385051579305638180, guid: cb42432fd36064cb690c83786002d0e3, type: 3}
+    position: {x: 6, y: 0, z: 27}
+    angle: -90
+    patrolDistance: 12
+  - prefab: {fileID: 1582892268272113195, guid: 4408c204bc3904db0a3259d75f26ebc2, type: 3}
+    position: {x: -7, y: 0, z: 13}
+    angle: 90
+    patrolDistance: 0
+  - prefab: {fileID: 1582892268272113195, guid: 4408c204bc3904db0a3259d75f26ebc2, type: 3}
+    position: {x: 7, y: 0, z: 20}
+    angle: -90
+    patrolDistance: 0
+  - prefab: {fileID: 3758317368508328432, guid: 84ef126a9a15041ce9e21ad26b955920, type: 3}
+    position: {x: 0, y: 0, z: 28}
+    angle: 180
+    patrolDistance: 0

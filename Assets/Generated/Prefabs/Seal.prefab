@@ -457,12 +457,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0858f802ce0840089940673321b350c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Seal
-  maxHp: 1
-  contactDamage: 1
-  aimHeight: 0.4
-  pointA: {x: 0, y: 0, z: 0}
-  pointB: {x: 0, y: 0, z: 0}
-  speed: 2
+  stats: {fileID: 11400000, guid: e5c519f9f057e4e4d8941511eb0c2706, type: 2}
+  touchDamage: 1
+  warning: {fileID: 0}
+  patrolDistance: 0
 --- !u!1 &6339551673493626919
 GameObject:
   m_ObjectHideFlags: 0

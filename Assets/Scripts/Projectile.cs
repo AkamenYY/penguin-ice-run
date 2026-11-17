@@ -1,13 +1,12 @@
 using UnityEngine;
 
-// БАЗОВЫЙ класс всех снарядов (наследование, A6). Наследники: Snowball, BossShot, Icicle.
-// Общее: полёт с начальной скоростью, исчезновение через lifeTime, реакция на триггер.
-// Что делать при попадании — решает наследник в HitSomething().
+// БАЗОВЫЙ класс всех снарядов. Наследники: Snowball, BossShot, Icicle.
+// Скорость задаёт тот, кто создал снаряд (из своих данных: PlayerStats, EnemyStats, BossStats, ItemValues).
 [RequireComponent(typeof(Rigidbody))]
 public abstract class Projectile : MonoBehaviour
 {
-    public float speed = 12f;
-    public float lifeTime = 3f;
+    public float speed;      // ставит стрелок сразу после Instantiate
+    public float lifeTime;   // через сколько секунд снаряд исчезает (в префабе)
 
     protected Rigidbody rb;
 

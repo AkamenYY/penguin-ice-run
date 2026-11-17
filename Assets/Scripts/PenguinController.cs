@@ -1,12 +1,11 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-// Пингвин: бег, прыжок, снежки, анимации.
-// Ввод (Input System): компонент PlayerInput сам вызывает OnMove / OnJump / OnFire.
+// Управление пингвином: PlayerInput (Send Messages) вызывает OnMove / OnJump / OnFire.
+// Скорость и прыжок — в ассете Player_Stats.
 public class PenguinController : MonoBehaviour
 {
-    public float speed = 5.5f;     // скорость бега
-    public float jumpSpeed = 7f;   // сила прыжка
+    public PlayerStats stats;      // ДАННЫЕ игрока
     public Animator anim;          // анимации модели: Idle / Run / Jump / Wave
     public AudioClip jumpClip;     // звук прыжка
 
@@ -20,8 +19,6 @@ public class PenguinController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
-    // ===== Ввод =====
-
     public void OnMove(InputValue value)
     {
         move = value.Get<Vector2>();
@@ -30,7 +27,7 @@ public class PenguinController : MonoBehaviour
     public void OnJump()
     {
         if (!grounded) return;   // прыгаем только со льда
-        rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpSpeed, rb.linearVelocity.z);
+        rb.linearVelocity = new Vector3(rb.linearVelocity.x, stats.jumpSpeed, rb.linearVelocity.z);
         GetComponent<AudioSource>().PlayOneShot(jumpClip);
     }
 
@@ -40,29 +37,25 @@ public class PenguinController : MonoBehaviour
         GetComponent<Thrower>().Throw();  // снежок
     }
 
-    // ===== Физика =====
-
     void FixedUpdate()
     {
-        // 1. Стоим на льду? Смотрим, есть ли что-то в маленьком шаре у ног.
+        // под ногами есть лёд? (маленькая сфера у ног)
         Collider[] under = Physics.OverlapSphere(transform.position + Vector3.up * 0.2f, 0.3f,
                                                  Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
         grounded = under.Length > 0 && rb.linearVelocity.y < 0.5f;
         platform = grounded ? under[0].GetComponent<MovingPlatform>() : null;
 
-        // 2. Направление относительно камеры: стик вверх = «от камеры»
+        // направление относительно камеры: «вверх» на стике = туда, куда смотрит камера
         Transform cam = Camera.main.transform;
         Vector3 forward = cam.forward; forward.y = 0f; forward.Normalize();
         Vector3 right = cam.right; right.y = 0f; right.Normalize();
         Vector3 dir = forward * move.y + right * move.x;
         if (GameManager.I.Ending) dir = Vector3.zero;   // смерть / победа — стоим
 
-        // 3. Скорость по полу (+ скорость льдины, если едем на ней). Вертикальную не трогаем.
-        Vector3 vel = dir * speed;
-        if (platform != null) vel += platform.Velocity;
+        Vector3 vel = dir * stats.moveSpeed;
+        if (platform != null) vel += platform.Velocity;   // едем вместе с паромом
         rb.linearVelocity = new Vector3(vel.x, rb.linearVelocity.y, vel.z);
 
-        // 4. Поворачиваемся туда, куда бежим
         if (dir != Vector3.zero) rb.MoveRotation(Quaternion.LookRotation(dir));
     }
 
@@ -70,7 +63,6 @@ public class PenguinController : MonoBehaviour
     {
         anim.SetBool("Run", move != Vector2.zero);
         anim.SetBool("Grounded", grounded);
-
         if (transform.position.y < -2.5f) GameManager.I.Restart();   // упал в воду
     }
 }

@@ -3,23 +3,10 @@ using UnityEngine.AI;
 
 // ВРАГ 3 — морж-таран. Медленно идёт к игроку по NavMesh, потом делает быстрый рывок по прямой.
 // Состояния: Idle (идёт к игроку) → WindUp (стоит, «!», трясётся) → Charge (рывок) → Rest (устал, можно бить).
+// Все числа — в Charger_Stats: viewRange = когда замечает, attackRange = с какого расстояния рывок.
 public class Charger : Enemy
 {
     enum State { Idle, WindUp, Charge, Rest }
-
-    [Header("Движение")]
-    public float walkSpeed = 1.5f;
-    public float noticeRange = 12f;     // с какого расстояния начинает идти к игроку
-
-    [Header("Зрение")]
-    public float chargeRange = 7f;      // с какого расстояния делает рывок
-    public float viewAngle = 60f;
-
-    [Header("Атака")]
-    public float windUp = 0.7f;         // замах: «!» и тряска
-    public float chargeSpeed = 11f;
-    public float chargeTime = 0.7f;     // длина рывка в секундах
-    public float restTime = 1.5f;       // отдых после рывка (кулдаун)
 
     State state = State.Idle;
     NavMeshAgent agent;
@@ -32,7 +19,7 @@ public class Charger : Enemy
     {
         base.Start();
         agent = GetComponent<NavMeshAgent>();
-        agent.speed = walkSpeed;
+        agent.speed = stats.moveSpeed;
         model = transform.Find("Model");
     }
 
@@ -51,9 +38,9 @@ public class Charger : Enemy
 
     void Idle()
     {
-        if (DistanceToPlayer() < noticeRange) agent.SetDestination(player.position);
+        if (DistanceToPlayer() < stats.viewRange) agent.SetDestination(player.position);
 
-        if (DistanceToPlayer() < chargeRange && CanSeePlayer(chargeRange, viewAngle))
+        if (DistanceToPlayer() < stats.attackRange && CanSeePlayer(stats.attackRange, stats.viewAngle))
         {
             state = State.WindUp;
             timer = 0f;
@@ -64,10 +51,10 @@ public class Charger : Enemy
 
     void WindUp()
     {
-        TurnToPlayer(240f);
+        TurnToPlayer();
         model.localPosition = new Vector3(Mathf.Sin(timer * 60f) * 0.06f, 0f, 0f);   // тряска — видно, что сейчас рванёт
 
-        if (timer >= windUp)
+        if (timer >= stats.windUp)
         {
             model.localPosition = Vector3.zero;
             ShowWarning(false);
@@ -80,15 +67,15 @@ public class Charger : Enemy
 
     void Charge()
     {
-        agent.Move(chargeDir * chargeSpeed * Time.deltaTime);   // Move не даёт выехать за NavMesh и в стены
+        agent.Move(chargeDir * stats.chargeSpeed * Time.deltaTime);   // Move не даёт выехать за NavMesh и в стены
 
-        if (!hitDone && DistanceToPlayer() < 1.3f)
+        if (!hitDone && DistanceToPlayer() < stats.hitRange)
         {
             hitDone = true;
             HitPlayer();
         }
 
-        if (timer >= chargeTime)
+        if (timer >= stats.chargeTime)
         {
             state = State.Rest;
             timer = 0f;
@@ -97,6 +84,6 @@ public class Charger : Enemy
 
     void Rest()
     {
-        if (timer >= restTime) state = State.Idle;
+        if (timer >= stats.cooldown) state = State.Idle;
     }
 }

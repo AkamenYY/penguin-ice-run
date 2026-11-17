@@ -1,31 +1,26 @@
 using UnityEngine;
 
-// Тюлень (наследник Enemy): ползает туда-сюда между точками A и B. Один снежок — и он исчезает.
+// Тюлень (наследник Enemy): ползает туда-сюда по прямой на patrolDistance вперёд. Один снежок — и он исчезает.
+// Скорость и жизни — в ассете Seal_Stats.
 public class Seal : Enemy
 {
-    public Vector3 pointA;
-    public Vector3 pointB;
-    public float speed = 2f;
-
+    Vector3 pointA, pointB;
     Vector3 target;   // куда ползём сейчас
 
     protected override void Start()
     {
         base.Start();   // жизни — из Enemy
+        pointA = transform.position;
+        pointB = pointA + transform.forward * patrolDistance;
         target = pointB;
     }
 
     void FixedUpdate()
     {
-        transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.fixedDeltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, target, stats.moveSpeed * Time.fixedDeltaTime);
         transform.LookAt(target);
 
         if (transform.position == target)   // дошли — разворот
             target = (target == pointB) ? pointA : pointB;
-    }
-
-    protected override void Die()
-    {
-        Destroy(gameObject);
     }
 }
