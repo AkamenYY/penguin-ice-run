@@ -31,3 +31,14 @@ What I asked the AI agent (Claude), what it got wrong, what I changed and why.
 2026-11-18  Broken save test did nothing in the Editor: Enter Play Mode keeps static fields, so the old data stayed in memory. Added a RuntimeInitializeOnLoadMethod that clears it, so every Play reads the file again like on the phone.
 2026-11-18  Found a week-10 bug: the menu seals searched for the player in the main menu (no player there) and threw NullReferenceException. Enemy.Start now checks for null.
 ```
+
+## Week 12 — Sound Pass (Assignment 12)
+
+```
+2026-11-25  The old sounds had no source or license, so I asked the agent to make all sounds and both music tracks with a Python script (SoundTools/make_sounds.py). Own work, CC0; listed in README.
+2026-11-25  One AudioManager with DontDestroyOnLoad plays music on two AudioSources with a 1 s crossfade; if the next scene wants the same track it does not restart it. Removed the old "Music" object from every scene.
+2026-11-25  Volume: Music and SFX sliders go through Log10(v) × 20 (decibels). Slider min is 0.0001, because Log10(0) is minus infinity. Saved in save.json (new fields musicVolume and sfxVolume; old saves still load with defaults).
+2026-11-25  Paused snapshot: Music volume is the exposed slider parameter, and an exposed parameter is no longer changed by snapshots. So there is a child group Tracks: the slider moves Music, the snapshot moves Tracks (−16 dB + lowpass 600 Hz). Mixer update mode = Unscaled Time, so it works while Time.timeScale = 0.
+2026-11-25  Wind-up sound plays in Enemy.ShowWarning(true), so every enemy and the boss are heard before the hit. Repeated sounds get pitch 0.92–1.08 from a pool of 4 SFX sources, so one sound does not change the pitch of another.
+```
+
