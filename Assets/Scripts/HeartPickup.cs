@@ -11,7 +11,7 @@ public class HeartPickup : MonoBehaviour
         if (health == null) return;   // это не пингвин
 
         health.Heal(GameManager.I.items.heartHeal);
-        other.GetComponent<AudioSource>().PlayOneShot(pickupClip);
+        AudioManager.Play(pickupClip);
         Destroy(gameObject);
     }
 }

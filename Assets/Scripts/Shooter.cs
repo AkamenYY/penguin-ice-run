@@ -67,6 +67,6 @@ public class Shooter : Enemy
         Vector3 target = player.position + Vector3.up * 0.5f;
         Projectile shot = Instantiate(shotPrefab, shootPoint.position, Quaternion.LookRotation(target - shootPoint.position));
         shot.speed = stats.shotSpeed;   // Start() у шара ещё не вызван — успеваем задать скорость
-        GetComponent<AudioSource>().PlayOneShot(shootClip);
+        AudioManager.Play(shootClip);
     }
 }

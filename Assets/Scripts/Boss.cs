@@ -52,6 +52,7 @@ public class Boss : Enemy
     IEnumerator FanAttack()
     {
         exclamation.SetActive(true);
+        AudioManager.Play(windUpClip);           // слышно ДО удара
         yield return new WaitForSeconds(bossStats.warnTime);
         exclamation.SetActive(false);
 
@@ -67,7 +68,7 @@ public class Boss : Enemy
             Projectile shot = Instantiate(shotPrefab, shootPoint.position, rot);
             shot.speed = bossStats.shotSpeed;
         }
-        GetComponent<AudioSource>().PlayOneShot(shootClip);
+        AudioManager.Play(shootClip);
     }
 
     // атака 2: красные метки вокруг пингвина → через rainWarnTime падают сосульки
@@ -92,7 +93,7 @@ public class Boss : Enemy
             Projectile icicle = Instantiate(iciclePrefab, spots[i] + Vector3.up * 7f, Quaternion.identity);
             icicle.speed = GameManager.I.items.icicleSpeed;
         }
-        GetComponent<AudioSource>().PlayOneShot(shootClip);
+        AudioManager.Play(shootClip);
     }
 
     public override void TakeHit()

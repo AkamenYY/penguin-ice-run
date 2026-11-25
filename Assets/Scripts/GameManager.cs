@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     public Text levelText;     // «LEVEL 1   87» — название и оставшееся время
     public Text messageText;   // большая надпись по центру
     public AudioClip winClip;
+    public AudioClip loseClip;
 
     public bool Ending { get; private set; }   // уровень заканчивается (смерть или победа)
 
@@ -33,7 +34,6 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        AudioListener.volume = SaveSystem.Data.volume;   // настройка из save.json
         timeLeft = level.timeLimit;
         ShowMessage(level.startMessage, 4f);
 
@@ -99,6 +99,7 @@ public class GameManager : MonoBehaviour
         if (Ending) return;
         Ending = true;
         ShowMessage(message, 2f);
+        AudioManager.Play(loseClip, false);
         sceneToLoad = SceneManager.GetActiveScene().name;
         Invoke(nameof(LoadScene), 1.2f);
     }
@@ -111,7 +112,7 @@ public class GameManager : MonoBehaviour
         totalFish += fish;
         SaveSystem.CompleteLevel(level.number, totalFish);   // СОХРАНЕНИЕ, момент 1: после уровня
         ShowMessage("LEVEL COMPLETE!", 2.5f);
-        GetComponent<AudioSource>().PlayOneShot(winClip);
+        AudioManager.Play(winClip, false);
         sceneToLoad = level.nextScene;
         Invoke(nameof(LoadScene), 2.5f);
     }

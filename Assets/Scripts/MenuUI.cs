@@ -16,19 +16,20 @@ public class MenuUI : MonoBehaviour
 
     [Header("Настройки")]
     public GameObject settingsPanel;
-    public Slider volumeSlider;
+    public Slider musicSlider;         // громкость музыки
+    public Slider sfxSlider;           // громкость звуков
     public GameObject confirmPanel;    // «Delete all progress?»
     public Text confirmText;
 
     void Start()
     {
         Time.timeScale = 1f;   // если вышли в меню с паузы — время снова идёт
-        AudioListener.volume = SaveSystem.Data.volume;
 
         if (fishText != null)
             fishText.text = "FISH RESCUED: " + GameManager.totalFish + "\nBEST: " + SaveSystem.Data.bestScore;
 
-        if (volumeSlider != null) volumeSlider.value = SaveSystem.Data.volume;
+        if (musicSlider != null) musicSlider.value = SaveSystem.Data.musicVolume;
+        if (sfxSlider != null) sfxSlider.value = SaveSystem.Data.sfxVolume;
     }
 
     // ---------- выбор уровня ----------
@@ -62,10 +63,16 @@ public class MenuUI : MonoBehaviour
         settingsPanel.SetActive(true);
     }
 
-    public void SetVolume(float value)   // слайдер
+    public void SetMusic(float value)   // слайдер MUSIC
     {
-        SaveSystem.Data.volume = value;
-        AudioListener.volume = value;
+        SaveSystem.Data.musicVolume = value;
+        AudioManager.I.ApplyVolumes();
+    }
+
+    public void SetSfx(float value)     // слайдер SFX
+    {
+        SaveSystem.Data.sfxVolume = value;
+        AudioManager.I.ApplyVolumes();
     }
 
     public void CloseSettings()

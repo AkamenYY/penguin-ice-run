@@ -97,7 +97,7 @@ AudioSource:
   m_GameObject: {fileID: 1582892268272113195}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300006, guid: e9b772fc189024691901b616854b2a0c, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
@@ -201,6 +201,8 @@ MonoBehaviour:
   touchDamage: 0
   warning: {fileID: 4406397835071540968}
   patrolDistance: 0
+  windUpClip: {fileID: 8300000, guid: 6053caef7b5ef4010ae7a707d54691a2, type: 3}
+  deathClip: {fileID: 8300000, guid: baaf8f6f1cf58479f9aac4b53065640d, type: 3}
   shotPrefab: {fileID: 4511760522765496027, guid: 669f1826ee1a74318a018254d79ba5b5, type: 3}
   shootPoint: {fileID: 1451961197038707287}
   shootClip: {fileID: 8300000, guid: 986b29e273b4047a3a002d9acbf63a5c, type: 3}

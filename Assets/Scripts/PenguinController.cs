@@ -28,7 +28,7 @@ public class PenguinController : MonoBehaviour
     {
         if (!grounded) return;   // прыгаем только со льда
         rb.linearVelocity = new Vector3(rb.linearVelocity.x, stats.jumpSpeed, rb.linearVelocity.z);
-        GetComponent<AudioSource>().PlayOneShot(jumpClip);
+        AudioManager.Play(jumpClip);
     }
 
     public void OnFire()

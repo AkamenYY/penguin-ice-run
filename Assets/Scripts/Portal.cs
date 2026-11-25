@@ -20,7 +20,7 @@ public class Portal : MonoBehaviour
         open = true;
         closedVisual.SetActive(false);
         openVisual.SetActive(true);
-        GetComponent<AudioSource>().PlayOneShot(openClip);
+        AudioManager.Play(openClip, false);
     }
 
     void OnTriggerEnter(Collider other)

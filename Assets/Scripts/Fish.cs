@@ -11,7 +11,7 @@ public class Fish : MonoBehaviour
         if (!other.CompareTag("Player")) return;
 
         GameManager.I.AddFish();
-        if (pickupClip != null) other.GetComponent<AudioSource>().PlayOneShot(pickupClip);
+        AudioManager.Play(pickupClip);
         Destroy(gameObject);
     }
 }

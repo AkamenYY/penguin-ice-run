@@ -19,6 +19,7 @@ public class PauseMenu : MonoBehaviour
         panel.SetActive(true);
         GameManager.I.messageText.text = "";   // убрать подсказку, чтобы не налезала на PAUSED
         Time.timeScale = 0f;   // время стоит: физика, корутины с WaitForSeconds, анимации
+        AudioManager.I.SetPaused(true);   // музыка тише и глуше (снапшот Paused)
     }
 
     // кнопка RESUME
@@ -26,12 +27,14 @@ public class PauseMenu : MonoBehaviour
     {
         panel.SetActive(false);
         Time.timeScale = 1f;   // время идёт снова
+        AudioManager.I.SetPaused(false);
     }
 
     // кнопка RESTART
     public void Restart()
     {
         Time.timeScale = 1f;   // сначала вернуть время, иначе новая сцена тоже будет «замороженной»
+        AudioManager.I.SetPaused(false);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
@@ -39,6 +42,7 @@ public class PauseMenu : MonoBehaviour
     public void ToMenu()
     {
         Time.timeScale = 1f;
+        AudioManager.I.SetPaused(false);
         SceneManager.LoadScene("MainMenu");
     }
 }

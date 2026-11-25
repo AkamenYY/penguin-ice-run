@@ -9,6 +9,8 @@ public abstract class Enemy : MonoBehaviour
     public bool touchDamage = true;     // бьёт касанием (старый тюлень и босс). Новые враги — false, у них своя атака
     public GameObject warning;          // красный «!» над головой: показываем во время замаха (wind-up)
     public float patrolDistance;        // длина патруля — ставит GameManager из LevelData
+    public AudioClip windUpClip;        // звук замаха: игрок СЛЫШИТ атаку до удара
+    public AudioClip deathClip;         // звук гибели
 
     protected int hp;                   // текущие жизни — у КАЖДОГО врага свои (в ассете только maxHp)
     protected bool dead;
@@ -36,6 +38,7 @@ public abstract class Enemy : MonoBehaviour
         if (hp <= 0)
         {
             dead = true;
+            AudioManager.Play(deathClip);
             Die();
         }
     }
@@ -80,6 +83,7 @@ public abstract class Enemy : MonoBehaviour
     protected void ShowWarning(bool on)
     {
         if (warning != null) warning.SetActive(on);
+        if (on) AudioManager.Play(windUpClip);   // звук в НАЧАЛЕ замаха
     }
 
     protected void HitPlayer()

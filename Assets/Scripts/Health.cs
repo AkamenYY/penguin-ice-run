@@ -21,7 +21,7 @@ public class Health : MonoBehaviour
         if (invincible || GameManager.I.Ending) return;
 
         hp--;   // правило игры: любой удар = минус одно сердце
-        GetComponent<AudioSource>().PlayOneShot(hurtClip);
+        AudioManager.Play(hurtClip);
 
         if (hp <= 0) GameManager.I.Restart();
         else StartCoroutine(Blink());

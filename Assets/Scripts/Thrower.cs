@@ -17,6 +17,6 @@ public class Thrower : MonoBehaviour
         Vector3 pos = transform.position + transform.forward * 0.8f + Vector3.up * 0.7f;   // перед пингвином
         Projectile ball = Instantiate(snowballPrefab, pos, transform.rotation);            // повёрнут как пингвин
         ball.speed = stats.snowballSpeed;
-        GetComponent<AudioSource>().PlayOneShot(throwClip);
+        AudioManager.Play(throwClip);
     }
 }

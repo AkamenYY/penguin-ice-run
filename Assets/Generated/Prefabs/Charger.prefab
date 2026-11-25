@@ -786,6 +786,8 @@ MonoBehaviour:
   touchDamage: 0
   warning: {fileID: 1153687190883449195}
   patrolDistance: 0
+  windUpClip: {fileID: 8300000, guid: 6053caef7b5ef4010ae7a707d54691a2, type: 3}
+  deathClip: {fileID: 8300000, guid: baaf8f6f1cf58479f9aac4b53065640d, type: 3}
 --- !u!1 &5289436796972446676
 GameObject:
   m_ObjectHideFlags: 0
